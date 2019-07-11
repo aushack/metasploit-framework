@@ -6,6 +6,7 @@
 class MetasploitModule < Msf::Auxiliary
   include Msf::Auxiliary::Report
   include Msf::Exploit::Remote::HttpClient
+  include Msf::Exploit::Remote::HTTP::Joomla
 
   def initialize(info = {})
     super(update_info(info,
@@ -36,6 +37,11 @@ class MetasploitModule < Msf::Auxiliary
   end
 
   def check
+    version = Gem::Version.new(joomla_version)
+    if version
+      print_status("Detected Joomla version #{joomla_version}")
+    end
+
     flag = Rex::Text.rand_text_alpha(8)
     lmark = Rex::Text.rand_text_alpha(5)
     rmark = Rex::Text.rand_text_alpha(5)
